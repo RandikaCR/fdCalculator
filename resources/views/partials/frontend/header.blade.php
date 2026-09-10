@@ -51,9 +51,9 @@
         <div class="contact-info">
             <h4>Contact Info</h4>
             <ul>
-                <li class="fs-5">Jeewanth Perera</li>
-                <li><a href="tel:+94778336599">+94 77 833 6599</a></li>
-                <li><a href="mailto:info@example.com">info@example.com</a></li>
+                <li class="fs-5">Jeewantha Perera</li>
+                <li><a href="tel:+{{ myNumber()['link'] }}">{{ myNumber()['display'] }}</a></li>
+                <li><a href="mailto:{{ myEmail() }}">{{ myEmail() }}</a></li>
             </ul>
         </div>
         <div class="social-links">

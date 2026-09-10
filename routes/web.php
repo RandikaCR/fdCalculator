@@ -16,6 +16,8 @@ use App\Http\Controllers\Backend\UsersController AS BackendUsers;
 //1 - Frontend Routes
 Route::group([ 'prefix' =>'/'], function () {
     Route::get('/', [Frontend::class, 'index'])->name('frontend.homepage');
+    Route::get('/client/rate/{clientId}', [Frontend::class, 'viewRate'])->name('frontend.viewRate');
+    Route::post('/client/rate/get', [Frontend::class, 'getRate'])->name('frontend.getRate');
 
     Route::post('/app-logout', [Frontend::class, 'appLogout'])->name('frontend.appLogout');
 
@@ -43,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/clients/edit/{clientId}', [BackendClients::class, 'edit'])->name('backend.clients.edit');
         Route::post('/clients/store', [BackendClients::class, 'store'])->name('backend.clients.store');
         Route::post('/clients/rate-calculator', [BackendClients::class, 'rateCalculator'])->name('backend.clients.rateCalculator');
+        Route::post('/clients/get-ceiling-rate', [BackendClients::class, 'getCeilingRate'])->name('backend.clients.getCeilingRate');
 
         // R
         Route::get('/rates', [BackendRates::class, 'index'])->name('backend.rates.index');

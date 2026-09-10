@@ -70,7 +70,7 @@
                                 <div class="col-md-3 mb-4">
                                     <div>
                                         <label for="rate_id" class="form-label">Period</label>
-                                        <select class="form-control js-example-basic-single" name="rate_id" id="rate_id">
+                                        <select class="form-control js-example-basic-single get-ceiling-rate" name="rate_id" id="rate_id">
                                             @foreach($rates as $rate)
                                                 <option value="{{ $rate->id }}" {{ !empty($client) && $client->rate_id == $rate->id ? 'selected' : '' }}>{{ $rate->period }}</option>
                                             @endforeach
@@ -88,41 +88,52 @@
                                     <label class="form-label">Interest Payment Frequency</label>
                                     <div class="mt-1">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="ip_frequency" id="ip_frequency_1" value="1" {{ !empty($client) && $client->ip_frequency == 1 ? 'checked' : '' }}>
+                                            <input class="form-check-input get-ceiling-rate" type="radio" name="ip_frequency" id="ip_frequency_1" value="1" {{ !empty($client) && $client->ip_frequency == 1 ? 'checked' : '' }}>
                                             <label class="form-check-label" for="ip_frequency_1">Maturity</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="ip_frequency" id="ip_frequency_2" value="2" {{ !empty($client) && $client->ip_frequency == 2 ? 'checked' : '' }}>
+                                            <input class="form-check-input get-ceiling-rate" type="radio" name="ip_frequency" id="ip_frequency_2" value="2" {{ !empty($client) && $client->ip_frequency == 2 ? 'checked' : '' }}>
                                             <label class="form-check-label" for="ip_frequency_2">Monthly</label>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 mb-4">
+                                <div class="col-md-3 mb-4">
                                     <label class="form-label">Age Group</label>
                                     <div class="mt-1">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="age_group" id="age_group_1" value="1" {{ !empty($client) && $client->age_group == 1 ? 'checked' : '' }}>
+                                            <input class="form-check-input get-ceiling-rate" type="radio" name="age_group" id="age_group_1" value="1" {{ !empty($client) && $client->age_group == 1 ? 'checked' : '' }}>
                                             <label class="form-check-label" for="age_group_1">Senior</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="age_group" id="age_group_2" value="2" {{ !empty($client) && $client->age_group == 2 ? 'checked' : '' }}>
+                                            <input class="form-check-input get-ceiling-rate" type="radio" name="age_group" id="age_group_2" value="2" {{ !empty($client) && $client->age_group == 2 ? 'checked' : '' }}>
                                             <label class="form-check-label" for="age_group_2">Non Senior</label>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 mb-4">
+                                <div class="col-md-3 mb-4">
                                     <label class="form-label">TAX Status</label>
                                     <div class="mt-1">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="is_tax" id="is_tax_1" value="1" {{ !empty($client) && $client->is_tax == 1 ? 'checked' : '' }}>
+                                            <input class="form-check-input check-rate-on-change" type="radio" name="is_tax" id="is_tax_1" value="1" {{ !empty($client) && $client->is_tax == 1 ? 'checked' : '' }}>
                                             <label class="form-check-label" for="is_tax_1">Applicable</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="is_tax" id="is_tax_2" value="2" {{ !empty($client) && $client->is_tax == 2 ? 'checked' : '' }}>
+                                            <input class="form-check-input check-rate-on-change" type="radio" name="is_tax" id="is_tax_2" value="2" {{ !empty($client) && $client->is_tax == 2 ? 'checked' : '' }}>
                                             <label class="form-check-label" for="is_tax_2">Not Applicable</label>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 mb-4">
+                                    <div>
+                                        <label for="rate" class="form-label">Rate</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control text-end decimal-only" id="rate" name="rate" value="{{ isset($client) ? $client->rate : '' }}" placeholder="Enter here..." data-max="0">
+                                            <span class="input-group-text">%</span>
+                                            <input type="hidden" id="max_rate" value="{{ $ceiling_rate }}">
+                                        </div>
+                                        <span class="fs-12 text-info ceiling-rate-label">Ceiling {{ number_format($ceiling_rate, 2) }}%</span>
                                     </div>
                                 </div>
 
@@ -164,25 +175,25 @@
                                                 <td class="fw-medium">Period</td>
                                                 <td class="text-end fw-medium label-period"></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="gross-area">
                                                 <td class="fw-medium label-gross-interest"></td>
-                                                <td class="text-end fw-medium label-gross">300000</td>
+                                                <td class="text-end fw-medium label-gross"></td>
                                             </tr>
                                             <tr class="wht-area">
                                                 <td class="fw-medium">WHT</td>
-                                                <td class="text-end fw-medium label-wht">300000</td>
+                                                <td class="text-end fw-medium label-wht"></td>
                                             </tr>
                                             <tr>
                                                 <td class="fw-medium label-nett-interest">Nett Interest</td>
-                                                <td class="text-end fw-medium label-nett">300000</td>
+                                                <td class="text-end fw-medium label-nett"></td>
                                             </tr>
                                             <tr>
                                                 <td class="fw-medium text-primary fs-14">Maturity Value</td>
-                                                <td class="text-end text-primary fw-bold fs-14 label-maturity">300000</td>
+                                                <td class="text-end text-primary fw-bold fs-14 label-maturity"></td>
                                             </tr>
                                             <tr class="tot-interest-area">
                                                 <td class="fw-medium text-danger">Total Interest for the period</td>
-                                                <td class="text-end fw-medium text-danger label-tot-interest">300000</td>
+                                                <td class="text-end fw-medium text-danger label-tot-interest"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -212,9 +223,28 @@
 @section('custom_scripts')
     <script>
 
+        var $isCeilingSending = false;
+        var $isSending = false;
+        var $lastActivityTime = 0;
+        var $timer = null;
+
+        function lastActivityTimer(){
+
+            if( typeUnd($timer) && $timer !== null ){
+                clearInterval($timer);
+                $lastActivityTime = 0;
+            }
+
+            $timer = setInterval(function(){
+                $lastActivityTime++;
+            }, 1000);
+
+        }
+
         function getCalculation(){
             $rateId = $('#rate_id').val();
             $amount = $('#amount').val().trim();
+            $rate = $('#rate').val().trim();
             $ipFrequency = $('input[name="ip_frequency"]:checked').val();
             $ageGroup = $('input[name="age_group"]:checked').val();
             $isTax = $('input[name="is_tax"]:checked').val();
@@ -238,7 +268,7 @@
                 Swal.fire('Error!', 'TAX status required!', 'error');
             }
 
-            if($isInvalid == 0){
+            if($isInvalid === 0 && !$isSending){
                 $('#summary-loading-img').removeClass('d-none');
                 $('#summary-area').addClass('d-none');
                 setTimeout(function() {
@@ -247,6 +277,7 @@
                         type: 'POST',
                         data: {
                             rate_id: $rateId,
+                            rate: $rate,
                             amount: $amount,
                             ip_frequency: $ipFrequency,
                             age_group: $ageGroup,
@@ -255,6 +286,7 @@
                         },
                         dataType: 'json',
                         beforeSend: function ($jqXHR, $obj) {
+                            $isSending = true;
                             $('.label-ip-frequency').html('');
                             $('.label-gross-interest').html('');
                             $('.label-nett-interest').html('');
@@ -273,6 +305,7 @@
                             $('.label-tot-interest').html('');
                         },
                         success: function ($response, $textStatus, $jqXHR) {
+                            $isSending = false;
                             $('#summary-loading-img').addClass('d-none');
                             $('#summary-area').removeClass('d-none');
 
@@ -280,6 +313,7 @@
                             $('.label-gross-interest').html($response.gross_label);
                             $('.label-nett-interest').html($response.nett_label);
 
+                            $('.gross-area').show();
 
                             if($response.is_tot_interest == 1){
                                 $('.tot-interest-area').show();
@@ -309,15 +343,118 @@
             }
         }
 
+        function getCeilingRate(){
+            $rateId = $('#rate_id').val();
+            $ipFrequency = $('input[name="ip_frequency"]:checked').val();
+            $ageGroup = $('input[name="age_group"]:checked').val();
+            $('#rate').prop('disabled', true);
+
+            if(typeUnd($ipFrequency) && typeUnd($ageGroup)){
+                setTimeout(function() {
+                    $.ajax({
+                        url: "{{ route('backend.clients.getCeilingRate') }}",
+                        type: 'POST',
+                        data: {
+                            rate_id: $rateId,
+                            ip_frequency: $ipFrequency,
+                            age_group: $ageGroup,
+                            _token: csrf_token()
+                        },
+                        dataType: 'json',
+                        beforeSend: function ($jqXHR, $obj) {
+                            $isCeilingSending = true;
+                            $('.ceiling-rate-label').html('<div class="spinner-border text-info" role="status" style="width: 14px; height: 14px;"><span class="sr-only">Loading...</span></div>');
+
+                        },
+                        success: function ($response, $textStatus, $jqXHR) {
+                            $isCeilingSending = false;
+                            $('#rate').prop('disabled', false);
+                            $('.ceiling-rate-label').html('Ceiling ' + $response.ceiling_rate_label);
+                            $('#max_rate').val(getDecimalValue($response.ceiling_rate));
+
+                            @if(!empty($client))
+                            getCalculation();
+                            @endif
+
+                        },
+                        error: function ($jqXHR, $textStatus, $errorThrown) {
+                        }
+                    });
+
+                }, 50);
+            }
+
+        }
+
         $(document).ready(function (){
+
+            $('.gross-area').hide();
+            $('.wht-area').hide();
+            $('.tot-interest-area').hide();
 
             @if(!empty($client))
             getCalculation();
+
+            $('.check-rate-on-change').on('change', function ($e){
+                getCalculation();
+            });
+
+            $('#amount').on('keyup change', function ($e){
+                lastActivityTimer();
+
+                setInterval(function(){
+                    if ($timer !== null) {
+                        if ($lastActivityTime >= 1) {
+                            clearInterval($timer);
+                            $lastActivityTime = 0;
+                            $timer = null;
+                            getCalculation();
+                        }
+                    }
+                }, 1000);
+            });
+
+            @else
+
+            $('#rate').prop('disabled', true);
+
             @endif
 
             $('.check-rate').on('click', function ($e){
                 getCalculation();
             });
+
+            $('.get-ceiling-rate').on('change', function ($e){
+                getCeilingRate();
+            });
+
+            $('#rate').on('keyup change', function ($e){
+                $e.preventDefault();
+                $thisVal = getDecimalValue($(this).val());
+                $maxVal = getDecimalValue($('#max_rate').val());
+                $(this).css({'color': '#212529', 'border': '1px solid #ced4da'});
+
+                if ($maxVal > 0){
+                    if ($thisVal > $maxVal){
+                        $(this).val($maxVal);
+                        $(this).css({'color': '#f06548', 'border': '1px solid #f06548'});
+                    }
+                }
+
+                lastActivityTimer();
+                setInterval(function(){
+                    if ($timer !== null) {
+                        if ($lastActivityTime >= 1) {
+                            clearInterval($timer);
+                            $lastActivityTime = 0;
+                            $timer = null;
+                            getCalculation();
+                        }
+                    }
+                }, 1000);
+
+            });
+
         });
     </script>
 

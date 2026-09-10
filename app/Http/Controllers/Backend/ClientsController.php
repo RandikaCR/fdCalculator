@@ -36,17 +36,46 @@ class ClientsController extends Controller
     public function create(Request $request){
 
         $rates = Rates::all();
+        $ceilingRate = 0;
+
         return view('backend.clients.create',[
             'rates' => $rates,
+            'ceiling_rate' => $ceilingRate,
         ]);
     }
 
     public function edit(Request $request, $clientId){
         $client = Clients::find($clientId);
         $rates = Rates::all();
+        $ceilingRate = 0;
+
+        if (!empty($client)) {
+            $ipFrequency = $client->ip_frequency;
+            $ageGroup = $client->age_group;
+            $r = Rates::find($client->rate_id);
+
+            if ($ageGroup == 1){
+                if ($ipFrequency == 1){
+                    $ceilingRate = $r->senior_maturity_cbsl_ceiling_rate;
+                }elseif ($ipFrequency == 2){
+                    $ceilingRate = $r->senior_monthly_cbsl_ceiling_rate;
+                }
+            }elseif ($ageGroup == 2){
+                if ($ipFrequency == 1){
+                    $ceilingRate = $r->non_senior_maturity_cbsl_ceiling_rate;
+                }elseif ($ipFrequency == 2){
+                    $ceilingRate = $r->non_senior_monthly_cbsl_ceiling_rate;
+                }
+            }
+
+            $ceilingRate = !empty($ceilingRate) ? $ceilingRate : 0;
+        }
+
+
         return view('backend.clients.create',[
             'client' => $client,
             'rates' => $rates,
+            'ceiling_rate' => $ceilingRate,
         ]);
     }
 
@@ -55,6 +84,7 @@ class ClientsController extends Controller
         $request->validate([
             'name' => ['required'],
             'rate_id' => ['required'],
+            'rate' => ['required'],
             'amount' => ['required', 'numeric'],
             'ip_frequency' => ['required'],
             'age_group' => ['required'],
@@ -74,6 +104,7 @@ class ClientsController extends Controller
         $save->name = $request->name;
         $save->amount = $request->amount;
         $save->rate_id = $request->rate_id;
+        $save->rate = $request->rate;
         $save->ip_frequency = $request->ip_frequency;
         $save->age_group = $request->age_group;
         $save->is_tax = $request->is_tax;
@@ -87,87 +118,56 @@ class ClientsController extends Controller
 
     public function rateCalculator(Request $request){
 
+        $rateId = $request->rate_id;
         $ipFrequency = $request->ip_frequency;
         $ageGroup = $request->age_group;
         $isTax = $request->is_tax;
         $amount = $request->amount;
+        $rate = $request->rate;
 
+        $req = [
+            'rate_id' => $rateId,
+            'ip_frequency' => $ipFrequency,
+            'age_group' => $ageGroup,
+            'is_tax' => $isTax,
+            'amount' => $amount,
+            'rate' => $rate,
+        ];
 
-        $ipFrequencyLabel = $ipFrequency == '1' ? 'Maturity' : 'Monthly';
-        $grossLabel = 'Monthly Gross Interest';
-        $nettLabel = 'Monthly Net Interest';
+        $out = $this->calculate($req);
 
-        $isTotInterest = 0;
-        $isWht = $isTax == 1 ? 1 : 0;
+        return response()->json($out);
+    }
 
-        $r = Rates::find($request->rate_id);
-        $period = $r->period;
-        $months = $r->months;
+    public function getCeilingRate(Request $request){
+
+        $rateId = $request->rate_id;
+        $ipFrequency = $request->ip_frequency;
+        $ageGroup = $request->age_group;
+
+        $r = Rates::find($rateId);
+
         $rate = 0;
-
         if ($ageGroup == 1){
             if ($ipFrequency == 1){
-                $rate = $r->senior_maturity_ip;
+                $rate = $r->senior_maturity_cbsl_ceiling_rate;
             }elseif ($ipFrequency == 2){
-                $rate = $r->senior_monthly_ip;
+                $rate = $r->senior_monthly_cbsl_ceiling_rate;
             }
         }elseif ($ageGroup == 2){
             if ($ipFrequency == 1){
-                $rate = $r->non_senior_maturity_ip;
+                $rate = $r->non_senior_maturity_cbsl_ceiling_rate;
             }elseif ($ipFrequency == 2){
-                $rate = $r->non_senior_monthly_ip;
+                $rate = $r->non_senior_monthly_cbsl_ceiling_rate;
             }
         }
 
-
-        $gross = 0;
-        if ($ipFrequency == 1){
-            $gross = ($amount / 100 * $rate) / 12 * $months;
-        }
-        elseif ($ipFrequency == 2){
-            $isTotInterest = 1;
-            $gross = ($amount / 100 * $rate) / 12;
-        }
-
-        $wht = 0;
-        if (!empty($isWht)){
-            $as = ApplicationSettings::find(1);
-            $whtRate = $as->wht_rate;
-            $wht = $gross / 100 * $whtRate;
-        }
-
-        $nett = $gross - $wht;
-
-        $maturity = 0;
-        $totInterest = 0;
-        if ($ipFrequency == 1){
-            $maturity = $amount + $nett;
-        }
-        elseif ($ipFrequency == 2){
-            $maturity = $amount;
-            $totInterest = $nett * $months;
-        }
-
-
-
-
-        $rateLabel = number_format($rate, 2) .'%';
+        $rate = !empty($rate) ? $rate : 0;
 
         $out = [
             'status' => 'success',
-            'ip_frequency_label' => $ipFrequencyLabel,
-            'gross_label' => $grossLabel,
-            'nett_label' => $nettLabel,
-            'amount' => priceWithCurrency($amount),
-            'rate' => $rateLabel,
-            'period' => $period,
-            'wht' => priceWithCurrency($wht),
-            'gross' => priceWithCurrency($gross),
-            'nett' => priceWithCurrency($nett),
-            'maturity' => priceWithCurrency($maturity),
-            'tot_interest' => priceWithCurrency($totInterest),
-            'is_tot_interest' => $isTotInterest,
-            'is_wht' => $isWht,
+            'ceiling_rate' => $rate,
+            'ceiling_rate_label' => number_format($rate, 2) . '%',
         ];
         return response()->json($out);
     }

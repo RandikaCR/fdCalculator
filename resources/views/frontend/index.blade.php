@@ -42,7 +42,7 @@
                             </div>
                             <h4>Dial Me</h4>
                             <p>For Instant Help and Friendly Service.</p>
-                            <h5><a href="tel:+94778336599">+94 77 833 6599</a></h5>
+                            <h5><a href="tel:{{ myNumber()['link'] }}">{{ myNumber()['display'] }}</a></h5>
                         </div>
                     </div>
                 </div>

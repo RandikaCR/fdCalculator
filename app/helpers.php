@@ -298,4 +298,11 @@ function generateWhatsAppNumber($number){
     return $number;
 }
 
+function myNumber(){
+    return ['display' => '+94 77 833 6599', 'link' => '+94778336599'];
+}
+
+function myEmail(){
+    return 'jeewanthaj90@gmail.com';
+}
 ?>
