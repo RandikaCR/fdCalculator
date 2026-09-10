@@ -16,7 +16,11 @@
 @endsection
 
 @section('css')
-
+    <style type="text/css">
+        .wd-40{
+            width: 40%;
+        }
+    </style>
 @endsection
 
 @section('header_buttons')
@@ -161,40 +165,40 @@
                                 <div class="col-md-12 mb-4">
                                     <div class="table-responsive">
                                         <table class="table table-striped">
-                                            <tr>
-                                                <td class="fw-medium text-secondary">IP Frequency</td>
+                                            <tr class="align-middle">
+                                                <td class="fw-medium text-secondary fs-12 wd-40">IP Frequency</td>
                                                 <td class="text-end fw-medium text-secondary label-ip-frequency"></td>
                                             </tr>
-                                            <tr>
-                                                <td class="fw-medium">Amount</td>
+                                            <tr class="align-middle">
+                                                <td class="fw-medium fs-12 wd-40">Amount</td>
                                                 <td class="text-end fw-bold label-amount"></td>
                                             </tr>
-                                            <tr>
-                                                <td class="fw-medium">Rate</td>
+                                            <tr class="align-middle">
+                                                <td class="fw-medium fs-12 wd-40">Rate</td>
                                                 <td class="text-end fw-medium label-rate"></td>
                                             </tr>
-                                            <tr>
-                                                <td class="fw-medium">Period</td>
+                                            <tr class="align-middle">
+                                                <td class="fw-medium fs-12 wd-40">Period</td>
                                                 <td class="text-end fw-medium label-period"></td>
                                             </tr>
-                                            <tr class="gross-area">
-                                                <td class="fw-medium label-gross-interest"></td>
+                                            <tr class="gross-area align-middle">
+                                                <td class="fw-medium label-gross-interest fs-12 wd-40"></td>
                                                 <td class="text-end fw-medium label-gross"></td>
                                             </tr>
-                                            <tr class="wht-area">
-                                                <td class="fw-medium">WHT</td>
+                                            <tr class="wht-area align-middle">
+                                                <td class="fw-medium fs-12 wd-40">WHT</td>
                                                 <td class="text-end fw-medium label-wht"></td>
                                             </tr>
-                                            <tr>
-                                                <td class="fw-medium label-nett-interest">Nett Interest</td>
+                                            <tr class="align-middle">
+                                                <td class="fw-medium label-nett-interest wd-40">Nett Interest</td>
                                                 <td class="text-end fw-medium label-nett"></td>
                                             </tr>
-                                            <tr>
-                                                <td class="fw-medium text-primary fs-14">Maturity Value</td>
+                                            <tr class="align-middle">
+                                                <td class="fw-medium text-primary fs-14 wd-40">Maturity Value</td>
                                                 <td class="text-end text-primary fw-bold fs-14 label-maturity"></td>
                                             </tr>
-                                            <tr class="tot-interest-area">
-                                                <td class="fw-medium text-danger">Total Interest for the period</td>
+                                            <tr class="tot-interest-area align-middle">
+                                                <td class="fw-medium text-danger fs-12 wd-40">Total Interest for the period</td>
                                                 <td class="text-end fw-medium text-danger label-tot-interest"></td>
                                             </tr>
                                         </table>
