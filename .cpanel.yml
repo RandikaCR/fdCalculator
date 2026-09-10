@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/idealmar/public_html/fdcalculator.idealnart.lk/
+    - export DEPLOYPATH=/home/idealmar/public_html/fdcalculator.idealmart.lk/
     - /bin/cp -R app $DEPLOYPATH
     - /bin/cp -R bootstrap $DEPLOYPATH
     - /bin/cp -R public $DEPLOYPATH
