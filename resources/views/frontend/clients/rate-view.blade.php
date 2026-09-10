@@ -109,13 +109,13 @@
                                                     <input class="text-end" type="text" name="amount" id="amount" placeholder="Enter here" value="{{ !empty($client) ? $client->amount : 0 }}">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6 col-lg-3">
+                                            {{--<div class="col-sm-6 col-lg-3">
                                                 <div class="form-group">
                                                     <label class="text-uppercase fs-12">Interest Rate*</label>
                                                     <input class="text-end" type="text" name="rate" id="rate" placeholder="Enter here" value="{{ !empty($client) ? number_format($client->rate, 2) : 0 }}" style="padding-right: 35px;">
                                                     <div class="icon-box input-icon"><img src="{{ asset('assets/frontend/images/icons/icon-percentage.png') }}" alt=""></div>
                                                 </div>
-                                            </div>
+                                            </div>--}}
 
                                             <div class="col-sm-6 col-lg-3 d-flex align-items-end">
                                                 <div class="form-group message-btn w-100">
@@ -181,7 +181,7 @@
         function getCalculation(){
             $rateId = $('#rate_id').val();
             $amount = $('#amount').val().trim().replace(/,/g, '');
-            $rate = $('#rate').val().trim().replace(/,/g, '');
+            // $rate = $('#rate').val().trim().replace(/,/g, '');
             $ipFrequency = $('#ip_frequency').val();
 
             $isInvalid = 0;
@@ -190,10 +190,10 @@
                 $isInvalid++;
                 Swal.fire('Error!', 'Amount is required!', 'error');
             }
-            if(!typeUnd($rate) || $rate === ''){
+            /*if(!typeUnd($rate) || $rate === ''){
                 $isInvalid++;
                 Swal.fire('Error!', 'Rate is required!', 'error');
-            }
+            }*/
 
             if($isInvalid === 0){
 
@@ -205,7 +205,7 @@
                             client_id: $clientId,
                             rate_id: $rateId,
                             amount: $amount,
-                            rate: $rate,
+                            // rate: $rate,
                             ip_frequency: $ipFrequency,
                             _token: csrf_token()
                         },
@@ -254,10 +254,10 @@
                 formatAmountInput();
             });
 
-            $('#rate').on('keyup change', function ($e){
+            /*$('#rate').on('keyup change', function ($e){
                 $e.preventDefault();
                 formatAmountInput();
-            });
+            });*/
 
             $('#amount').on('focus', function ($e){
                 $e.preventDefault();
@@ -267,13 +267,13 @@
                 }, 50);
             });
 
-            $('#rate').on('focus', function ($e){
+            /*$('#rate').on('focus', function ($e){
                 $e.preventDefault();
                 var $this = $(this);
                 setTimeout(function() {
                     $this.select();
                 }, 50);
-            });
+            });*/
 
 
 

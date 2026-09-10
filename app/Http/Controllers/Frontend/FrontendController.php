@@ -55,7 +55,6 @@ class FrontendController extends Controller
         $ageGroup = $client->age_group;
         $isTax = $client->is_tax;
         $amount = $request->amount;
-        $rate = $request->rate;
 
         $req = [
             'rate_id' => $rateId,
@@ -63,7 +62,6 @@ class FrontendController extends Controller
             'age_group' => $ageGroup,
             'is_tax' => $isTax,
             'amount' => $amount,
-            'rate' => $rate,
         ];
 
         $out = $this->calculate($req);

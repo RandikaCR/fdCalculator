@@ -37,10 +37,14 @@ class ClientsController extends Controller
 
         $rates = Rates::all();
         $ceilingRate = 0;
+        $aer = 0;
+        $ipRate = 0;
 
         return view('backend.clients.create',[
             'rates' => $rates,
             'ceiling_rate' => $ceilingRate,
+            'aer' => $aer,
+            'ip_rate' => $ipRate,
         ]);
     }
 
@@ -48,6 +52,8 @@ class ClientsController extends Controller
         $client = Clients::find($clientId);
         $rates = Rates::all();
         $ceilingRate = 0;
+        $aer = 0;
+        $ipRate = 0;
 
         if (!empty($client)) {
             $ipFrequency = $client->ip_frequency;
@@ -56,14 +62,22 @@ class ClientsController extends Controller
 
             if ($ageGroup == 1){
                 if ($ipFrequency == 1){
+                    $ipRate = $r->senior_maturity_ip;
+                    $aer = $r->senior_maturity_aer;
                     $ceilingRate = $r->senior_maturity_cbsl_ceiling_rate;
                 }elseif ($ipFrequency == 2){
+                    $ipRate = $r->senior_monthly_ip;
+                    $aer = $r->senior_monthly_aer;
                     $ceilingRate = $r->senior_monthly_cbsl_ceiling_rate;
                 }
             }elseif ($ageGroup == 2){
                 if ($ipFrequency == 1){
+                    $ipRate = $r->non_senior_maturity_ip;
+                    $aer = $r->non_senior_maturity_aer;
                     $ceilingRate = $r->non_senior_maturity_cbsl_ceiling_rate;
                 }elseif ($ipFrequency == 2){
+                    $ipRate = $r->non_senior_monthly_ip;
+                    $aer = $r->non_senior_monthly_aer;
                     $ceilingRate = $r->non_senior_monthly_cbsl_ceiling_rate;
                 }
             }
@@ -76,6 +90,8 @@ class ClientsController extends Controller
             'client' => $client,
             'rates' => $rates,
             'ceiling_rate' => $ceilingRate,
+            'aer' => $aer,
+            'ip_rate' => $ipRate,
         ]);
     }
 
@@ -147,18 +163,28 @@ class ClientsController extends Controller
 
         $r = Rates::find($rateId);
 
-        $rate = 0;
+        $ipRate = 0;
+        $aer = 0;
+        $ceilingRate = 0;
         if ($ageGroup == 1){
             if ($ipFrequency == 1){
-                $rate = $r->senior_maturity_cbsl_ceiling_rate;
+                $ipRate = $r->senior_maturity_ip;
+                $aer = $r->senior_maturity_aer;
+                $ceilingRate = $r->senior_maturity_cbsl_ceiling_rate;
             }elseif ($ipFrequency == 2){
-                $rate = $r->senior_monthly_cbsl_ceiling_rate;
+                $ipRate = $r->senior_monthly_ip;
+                $aer = $r->senior_monthly_aer;
+                $ceilingRate = $r->senior_monthly_cbsl_ceiling_rate;
             }
         }elseif ($ageGroup == 2){
             if ($ipFrequency == 1){
-                $rate = $r->non_senior_maturity_cbsl_ceiling_rate;
+                $ipRate = $r->non_senior_maturity_ip;
+                $aer = $r->non_senior_maturity_aer;
+                $ceilingRate = $r->non_senior_maturity_cbsl_ceiling_rate;
             }elseif ($ipFrequency == 2){
-                $rate = $r->non_senior_monthly_cbsl_ceiling_rate;
+                $ipRate = $r->non_senior_monthly_ip;
+                $aer = $r->non_senior_monthly_aer;
+                $ceilingRate = $r->non_senior_monthly_cbsl_ceiling_rate;
             }
         }
 
@@ -166,8 +192,12 @@ class ClientsController extends Controller
 
         $out = [
             'status' => 'success',
-            'ceiling_rate' => $rate,
-            'ceiling_rate_label' => number_format($rate, 2) . '%',
+            'ip_rate' => $ipRate,
+            'ip_rate_label' => number_format($ipRate, 2) . '%',
+            'aer' => $aer,
+            'aer_label' => number_format($aer, 2) . '%',
+            'ceiling_rate' => $ceilingRate,
+            'ceiling_rate_label' => number_format($ceilingRate, 2) . '%',
         ];
         return response()->json($out);
     }

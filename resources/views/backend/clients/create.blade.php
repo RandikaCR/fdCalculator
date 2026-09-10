@@ -133,7 +133,9 @@
                                             <span class="input-group-text">%</span>
                                             <input type="hidden" id="max_rate" value="{{ $ceiling_rate }}">
                                         </div>
-                                        <span class="fs-12 text-info ceiling-rate-label">Ceiling {{ number_format($ceiling_rate, 2) }}%</span>
+                                        <p class="fs-12 fw-medium text-info mt-2 mb-1 ip-rate-label">IP Rate: {{ number_format($ip_rate, 2) }}%</p>
+                                        <p class="fs-12 fw-medium text-primary mb-1 aer-label">AER: {{ number_format($aer, 2) }}%</p>
+                                        <p class="fs-12 fw-medium text-danger mb-1 ceiling-rate-label">Ceiling: {{ number_format($ceiling_rate, 2) }}%</p>
                                     </div>
                                 </div>
 
@@ -363,14 +365,22 @@
                         dataType: 'json',
                         beforeSend: function ($jqXHR, $obj) {
                             $isCeilingSending = true;
-                            $('.ceiling-rate-label').html('<div class="spinner-border text-info" role="status" style="width: 14px; height: 14px;"><span class="sr-only">Loading...</span></div>');
+                            $('.ip-rate-label').html('<div class="spinner-border text-info" role="status" style="width: 14px; height: 14px;"><span class="sr-only">Loading...</span></div>');
+                            $('.aer-label').html('<div class="spinner-border text-primary" role="status" style="width: 14px; height: 14px;"><span class="sr-only">Loading...</span></div>');
+                            $('.ceiling-rate-label').html('<div class="spinner-border text-danger" role="status" style="width: 14px; height: 14px;"><span class="sr-only">Loading...</span></div>');
 
                         },
                         success: function ($response, $textStatus, $jqXHR) {
                             $isCeilingSending = false;
                             $('#rate').prop('disabled', false);
-                            $('.ceiling-rate-label').html('Ceiling ' + $response.ceiling_rate_label);
+                            $('.ip-rate-label').html('IP Rate: ' + $response.ip_rate_label);
+                            $('.aer-label').html('AER: ' + $response.aer_label);
+                            $('.ceiling-rate-label').html('Ceiling: ' + $response.ceiling_rate_label);
                             $('#max_rate').val(getDecimalValue($response.ceiling_rate));
+
+                            if (getDecimalValue($response.ip_rate) > 0){
+                                $('#rate').val($response.ip_rate);
+                            }
 
                             @if(!empty($client))
                             getCalculation();
