@@ -129,6 +129,9 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="mt-2 d-flex justify-content-end">
+                                    <span class="text-muted"> Showing<span class="mx-1">{{ $records->firstItem() }}</span>to<span class="mx-1">{{ $records->lastItem() }}</span>of<span class="mx-1">{{ $records->total() }}</span>records</span>
+                                </div>
                             </div>
                             <!--end col-->
                         </div>
