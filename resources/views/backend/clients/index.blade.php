@@ -136,7 +136,7 @@
                             <!--end col-->
                         </div>
                         <!--end row-->
-                        <div class="mt-5">
+                        <div class="mt-3">
                             {{--Paginaiton--}}
                             {!! $records->links('vendor.pagination.backend') !!}
                         </div>

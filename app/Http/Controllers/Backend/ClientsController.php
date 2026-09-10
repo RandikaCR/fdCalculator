@@ -24,7 +24,7 @@ class ClientsController extends Controller
                     ->orWhere('clients.amount', 'like', '%' . $keyword . '%');
             })
             ->orderBy('clients.id', 'DESC')
-            ->paginate(5)
+            ->paginate(20)
             ->withQueryString();
 
         return view('backend.clients.index',[
