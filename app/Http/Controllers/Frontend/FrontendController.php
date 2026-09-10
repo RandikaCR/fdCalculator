@@ -15,8 +15,9 @@ class FrontendController extends Controller
     }
 
     public function viewRate(Request $request, $clientId){
-        $client = Clients::find($clientId);
+        $client = Clients::where('id', $clientId)->where('status', 1)->first();
         $periods = Rates::all();
+        $getRate = [];
 
         $rate = [];
         if (!empty($client)){

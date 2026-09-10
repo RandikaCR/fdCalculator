@@ -46,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/clients/store', [BackendClients::class, 'store'])->name('backend.clients.store');
         Route::post('/clients/rate-calculator', [BackendClients::class, 'rateCalculator'])->name('backend.clients.rateCalculator');
         Route::post('/clients/get-ceiling-rate', [BackendClients::class, 'getCeilingRate'])->name('backend.clients.getCeilingRate');
+        Route::post('/clients/status', [BackendClients::class, 'status'])->name('backend.clients.status');
 
         // R
         Route::get('/rates', [BackendRates::class, 'index'])->name('backend.rates.index');

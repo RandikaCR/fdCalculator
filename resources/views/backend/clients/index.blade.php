@@ -114,10 +114,13 @@
                                                     <p class="mb-0">{{ $row->period }}</p>
                                                 </td>
                                                 <td class="text-center">
-                                                    <p class="mb-0"><span class="badge {{ commonStatus($row->status)['class'] }}">{{ commonStatus($row->status)['text'] }}</span></p>
+                                                    <p class="mb-0"><span class="badge badge-status {{ commonStatus($row->status)['class'] }}">{{ commonStatus($row->status)['text'] }}</span></p>
                                                 </td>
                                                 <td class="text-end">
                                                     <div class="d-flex justify-content-end align-items-center">
+                                                        <div class="form-check form-switch form-switch-success form-switch-md">
+                                                            <input class="form-check-input status" data-id="{{ $row->id }}" type="checkbox" role="switch"  {{ ($row->status == 1) ? 'checked': '' }} >
+                                                        </div>
                                                         <div>
                                                             <button class="btn btn-sm btn-outline-dark shadow-none copy-url" data-url="{{ url('client/rate/' . $row->id) }}" type="button"><i class="mdi mdi-content-copy" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy URL"></i></button>
                                                             <a href="{{ route('backend.clients.edit', $row->id) }}" class="btn btn-primary btn-sm waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><span class="mdi mdi-pencil"></span></a>
@@ -173,6 +176,31 @@
                 $key = $(this).data('url');
                 copyToClipboard($key);
                 swalSuccess('Copied!', 'Share url has been copied to your clipboard!');
+            });
+
+            $('.table').on('change', '.status', function (){
+                $id = $(this).data('id');
+                $url = "{{ route('backend.'.$routePrefix.'.status') }}";
+                $rowId = '#row-' + $id;
+                $.ajax({
+                    url: $url,
+                    dataType: 'json',
+                    data: {
+                        id: $id,
+                        _token: csrf_token()
+                    },
+                    method: 'POST',
+                    beforeSend: function ($jqXHR, $obj) {
+
+                    },
+                    success: function ($res, $textStatus, $jqXHR) {
+                        $($rowId).find('.badge-status').removeClass('bg-success bg-warning').addClass($res.class);
+                        $($rowId).find('.badge-status').html($res.text);
+                    },
+                    error: function ($jqXHR, $textStatus, $errorThrown) {
+
+                    }
+                });
             });
         });
     </script>

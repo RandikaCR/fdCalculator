@@ -201,4 +201,40 @@ class ClientsController extends Controller
         ];
         return response()->json($out);
     }
+
+    public function status(Request $request){
+        $req = $request->all();
+        $id = !empty($req['id']) ? $req['id'] : 0;
+
+        $text = '';
+        $class = '';
+
+        if (!empty($id)){
+            $get = Clients::find($id);
+
+            if ($get->status == 1){
+                $get->status = 0;
+            }else {
+                $get->status = 1;
+            }
+            $get->save();
+            $status = 'success';
+            $get = Clients::find($id);
+            $getStatus = commonStatus($get->status);
+            $text = $getStatus['text'];
+            $class = $getStatus['class'];
+
+        }else{
+            $status = 'error';
+        }
+
+
+        $out = [
+            'status' => $status,
+            'text' => $text,
+            'class' => $class,
+        ];
+        return response()->json($out);
+
+    }
 }
