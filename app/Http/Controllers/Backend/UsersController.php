@@ -24,7 +24,7 @@ class UsersController extends Controller
             ->when(!empty(!isSuperAdmin()), function ($query) {
                 return $query->where('users.user_role_id', '!=', 1);
             })
-            // ->where('users.id', '!=', 1)
+            ->where('users.id', '!=', 1)
             ->orderBy('users.id', 'ASC')
             ->paginate(20)
             ->withQueryString();
@@ -95,7 +95,6 @@ class UsersController extends Controller
 
                 $save = New User();
                 $save->password = Hash::make($request->password);
-                $save->image = 'user.png';
                 $save->status = 1;
             }
 
