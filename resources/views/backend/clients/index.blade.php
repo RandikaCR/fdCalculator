@@ -102,6 +102,10 @@
                                             <tr id="row-{{ $row->id }}">
                                                 <td>
                                                     <p class="mb-0 fw-medium">{{ $row->name }}</p>
+                                                    @if(!empty(isSuperAdmin()))
+                                                        <p class="mb-0 text-muted">{{ $row->user_name }}</p>
+                                                    @endif
+
                                                 </td>
                                                 <td class="text-end">
                                                     <p class="mb-0 fw-bold">{{ priceWithCurrency($row->amount) }}</p>

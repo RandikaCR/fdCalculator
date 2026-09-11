@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 class ApplicationSettingsController extends Controller
 {
     public function index(Request $request){
+        $userAccess = isSuperAdmin();
         $app = ApplicationSettings::find(1);
         return view('backend.application-settings.index', [
             'app' => $app,
+            'user_access' => $userAccess,
         ]);
     }
 
@@ -19,6 +21,14 @@ class ApplicationSettingsController extends Controller
 
         $fmTitle = 'info';
         $fmMsg = 'Nothing to update';
+
+        $userAccess = isSuperAdmin();
+        if (empty($userAccess)){
+            $fmTitle = 'error';
+            $fmMsg = $this->accessDeniedMessage;
+            session()->flash($fmTitle, $fmMsg);
+            return redirect( route('backend.applicationSettings.index') );
+        }
 
         $request->validate([
             'wht_rate' => ['required', 'numeric'],

@@ -16,12 +16,23 @@ class ClientsController extends Controller
 
         $records = Clients::select(
             'clients.*',
+            'users.name as user_name',
             'rates.period',
         )
+            ->join('users', 'clients.user_id', 'users.id')
             ->join('rates', 'clients.rate_id', 'rates.id')
             ->when(!empty($keyword), function ($query) use ($keyword) {
-                return $query->where('clients.name', 'like', '%' . $keyword . '%')
-                    ->orWhere('clients.amount', 'like', '%' . $keyword . '%');
+                if (!empty(isSuperAdmin())){
+                    return $query->where('clients.name', 'like', '%' . $keyword . '%')
+                        ->orWhere('clients.amount', 'like', '%' . $keyword . '%')
+                        ->orWhere('users.name', 'like', '%' . $keyword . '%');
+                }else{
+                    return $query->where('clients.name', 'like', '%' . $keyword . '%')
+                        ->orWhere('clients.amount', 'like', '%' . $keyword . '%');
+                }
+            })
+            ->when(empty(isSuperAdmin()), function ($query) {
+                return $query->where('clients.user_id', $this->userId);
             })
             ->orderBy('clients.id', 'DESC')
             ->paginate(20)
@@ -54,6 +65,16 @@ class ClientsController extends Controller
         $ceilingRate = 0;
         $aer = 0;
         $ipRate = 0;
+
+        if (empty(isSuperAdmin())){
+            if ( $this->userId != $client->user_id){
+                $fmTitle = 'error';
+                $fmMsg = $this->accessDeniedMessage;
+                session()->flash($fmTitle, $fmMsg);
+                return redirect( route('backend.clients.index') );
+            }
+        }
+
 
         if (!empty($client)) {
             $ipFrequency = $client->ip_frequency;
@@ -112,6 +133,7 @@ class ClientsController extends Controller
             $fmMsg = 'Client has been updated successfully';
         }else{
             $save = new Clients();
+            $save->user_id = $this->userId;
             $save->status = 1;
             $fmMsg = 'New Client has been created successfully';
         }

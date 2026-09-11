@@ -9,6 +9,23 @@ use Illuminate\Support\Facades\Auth;
 
 abstract class Controller
 {
+    public $userId = null;
+    public $isSuperAdmin = null;
+
+    public $accessDeniedMessage = 'You do not have enough permissions to do this action. Please contact Admin.';
+
+    public function __construct(Request $request){
+
+        if (!empty(Auth::user()) && !empty(Auth::user()->id)){
+            $this->userId = Auth::user()->id;
+
+            if (Auth::user()->user_role_id == 1){
+                $this->isSuperAdmin = true;
+            }
+        }
+
+    }
+
     public function calculate($req){
 
         $rateId = $req['rate_id'];

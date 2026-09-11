@@ -9,15 +9,26 @@ use Illuminate\Http\Request;
 class RatesController extends Controller
 {
     public function index(Request $request){
+        $userAccess = isSuperAdmin();
+
         $rates = Rates::all();
         return view('backend.rates.index', [
             'rates' => $rates,
+            'user_access' => $userAccess,
         ]);
     }
 
     public function store(Request $request){
         $fmTitle = 'info';
         $fmMsg = 'Nothing to update';
+
+        $userAccess = isSuperAdmin();
+        if (empty($userAccess)){
+            $fmTitle = 'error';
+            $fmMsg = $this->accessDeniedMessage;
+            session()->flash($fmTitle, $fmMsg);
+            return redirect( route('backend.rates.index') );
+        }
 
         $index = 0;
         foreach ($request->id as $id){
