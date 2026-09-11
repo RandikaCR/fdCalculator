@@ -5,7 +5,7 @@
     $singlePageTitle = 'User';
     $routePrefix = 'users';
     $pageUrl = 'users';
-    $defaultPw = 'FDCUser@7489';
+    $defaultPw = 'FDCUser@789';
 @endphp
 
 @section('page_title')
