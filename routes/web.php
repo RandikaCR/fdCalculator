@@ -24,7 +24,7 @@ Route::group([ 'prefix' =>'/'], function () {
 });
 
 //2 - Auth Routes
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'isActiveUser'])->group(function () {
 
     // 2 - Admin Routes
     Route::group([ 'prefix' =>'admin'], function () {
@@ -53,6 +53,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/rates/store', [BackendRates::class, 'store'])->name('backend.rates.store');
 
         // U
+        // U
+        Route::get('/users', [BackendUsers::class, 'index'])->name('backend.users.index');
+        Route::post('/users/store', [BackendUsers::class, 'store'])->name('backend.users.store');
+        Route::post('/users/get', [BackendUsers::class, 'get'])->name('backend.users.get');
+        Route::post('/users/status', [BackendUsers::class, 'status'])->name('backend.users.status');
+
         Route::get('/my-profile', [BackendUsers::class, 'myProfile'])->name('backend.users.myProfile');
         Route::post('/profile/update-personal-info', [BackendUsers::class, 'saveMyProfilePersonal'])->name('backend.users.saveMyProfilePersonal');
 

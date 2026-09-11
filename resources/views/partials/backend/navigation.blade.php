@@ -71,6 +71,15 @@
                     </a>
                 </li>
 
+                @if(isSuperAdmin())
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ (request()->segment(2) == 'users') ? 'active' : '' }}" href="{{ url('/admin/users') }}">
+                            <i class="mdi mdi-account-details"></i> <span data-key="t-users">Users</span>
+                        </a>
+                    </li>
+                @endif
+
+
             </ul>
         </div>
         <!-- Sidebar -->

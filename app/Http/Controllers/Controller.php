@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ApplicationSettings;
 use App\Models\Rates;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 abstract class Controller
 {
@@ -93,5 +94,15 @@ abstract class Controller
         ];
 
         return $out;
+    }
+
+    public function userAccessDeniedMessage($req = []){
+        return [
+            'errors' => [
+                'Access Denied' => [
+                    'You do not have enough permissions to do this action. Please contact Admin.'
+                ]
+            ]
+        ];
     }
 }
