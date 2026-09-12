@@ -53,7 +53,7 @@
                                     <nav id="navbar-application-settings" class="navbar navbar-light bg-light flex-column">
                                         <nav class="nav nav-pills flex-column p-3 w-100">
 
-                                            <a class="nav-link active" href="#wht-rate"><i class="ri-pencil-ruler-2-line align-middle me-2 fs-16"></i> <span>Fees</span></a>
+                                            <a class="nav-link active" href="#wht-rate"><i class="ri-pencil-ruler-2-line align-middle me-2 fs-16"></i> <span>Default Rates</span></a>
                                             {{--<a class="nav-link active" href="#as-general-settings"><i class="ri-pencil-ruler-2-line align-middle me-2 fs-16"></i> <span>General Settings</span></a>--}}
                                             {{--<a class="nav-link" href="#item-1"><i class="ri-dashboard-2-line align-middle me-2 fs-16"></i> <span>Dashboards</span></a>
                                             <nav class="nav nav-pills flex-column">
