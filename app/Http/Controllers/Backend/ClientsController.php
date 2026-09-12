@@ -13,6 +13,11 @@ class ClientsController extends Controller
     public function index(Request $request)
     {
         $keyword = !empty($request->keyword) ? $request->keyword : null;
+        $isListAll = !empty($request->list_all) ? 1 : 0;
+
+        if (empty(isSuperAdmin())){
+            $isListAll = 0;
+        }
 
         $records = Clients::select(
             'clients.*',
@@ -31,7 +36,7 @@ class ClientsController extends Controller
                         ->orWhere('clients.amount', 'like', '%' . $keyword . '%');
                 }
             })
-            ->when(empty(isSuperAdmin()), function ($query) {
+            ->when(empty($isListAll), function ($query) {
                 return $query->where('clients.user_id', $this->userId);
             })
             ->orderBy('clients.id', 'DESC')
@@ -41,6 +46,7 @@ class ClientsController extends Controller
         return view('backend.clients.index',[
             'records' => $records,
             'keyword' => $keyword,
+            'list_all' => $isListAll,
         ]);
     }
 

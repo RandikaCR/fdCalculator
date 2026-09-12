@@ -40,10 +40,20 @@
                         <div class="card-body">
                             <form method="GET" action="{{ route('backend.'.$routePrefix .'.index') }}">
                                 <div class="row">
-                                    <div class="col-sm-7 mb-3">
+                                    <div class="col-sm-4 mb-3">
                                         <label for="keyword" class="form-label">Search</label>
                                         <input class="form-control" id="keyword" name="keyword" type="text" placeholder="Enter here..." value="{{ $keyword }}">
                                     </div>
+                                    @if(isSuperAdmin())
+                                        <div class="col-sm-2 mb-3 d-flex align-items-end">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" value="1" id="list_all" name="list_all" {{ !empty($list_all) ? 'checked' : 0 }}>
+                                                <label class="form-check-label" for="list_all">
+                                                    List All Clients
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="col-sm-5 mb-3 d-flex align-items-end">
                                         <button type="submit" class="btn btn-primary">
                                             <span class="mdi mdi-magnify me-2"></span>
