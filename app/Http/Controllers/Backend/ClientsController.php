@@ -26,6 +26,9 @@ class ClientsController extends Controller
         )
             ->join('users', 'clients.user_id', 'users.id')
             ->join('rates', 'clients.rate_id', 'rates.id')
+            ->when(empty($isListAll), function ($query) {
+                return $query->where('clients.user_id', $this->userId);
+            })
             ->when(!empty($keyword), function ($query) use ($keyword) {
                 if (!empty(isSuperAdmin())){
                     return $query->where('clients.name', 'like', '%' . $keyword . '%')
@@ -36,9 +39,7 @@ class ClientsController extends Controller
                         ->orWhere('clients.amount', 'like', '%' . $keyword . '%');
                 }
             })
-            ->when(empty($isListAll), function ($query) {
-                return $query->where('clients.user_id', $this->userId);
-            })
+
             ->orderBy('clients.id', 'DESC')
             ->paginate(20)
             ->withQueryString();
