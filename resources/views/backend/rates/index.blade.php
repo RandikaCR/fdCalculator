@@ -26,7 +26,14 @@
 @if(!empty($user_access))
 
     @section('header_buttons')
-
+        <div class="row">
+            <div class="col-sm-12 d-flex justify-content-end mb-3">
+                <a href="{{ route('backend.rates.import') }}" class="btn btn-primary me-3">
+                    <span class="mdi mdi-plus-box me-2"></span>
+                    Import
+                </a>
+            </div>
+        </div>
     @endsection
 
     @section('content')

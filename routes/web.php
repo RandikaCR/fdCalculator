@@ -50,7 +50,11 @@ Route::middleware(['auth', 'verified', 'isActiveUser'])->group(function () {
 
         // R
         Route::get('/rates', [BackendRates::class, 'index'])->name('backend.rates.index');
+        Route::get('/rates/import', [BackendRates::class, 'import'])->name('backend.rates.import');
         Route::post('/rates/store', [BackendRates::class, 'store'])->name('backend.rates.store');
+        Route::post('/rates/import/store', [BackendRates::class, 'importStore'])->name('backend.rates.importStore');
+        Route::post('/rates/import/process', [BackendRates::class, 'importProcess'])->name('backend.rates.importProcess');
+        Route::post('/rates/import/clear', [BackendRates::class, 'ClearImportedRates'])->name('backend.rates.ClearImportedRates');
 
         // U
         // U

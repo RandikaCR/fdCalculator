@@ -39,6 +39,11 @@ function defaultCurrency(){
     return 'Rs. ';
 }
 
+function rateWithPercentage($rate = 0){
+    $rate = (float) $rate;
+    return number_format($rate, 2) . '%';
+}
+
 function dateTimeFormat($date){
     return date('d-m-Y h:i A', strtotime($date));
 }
