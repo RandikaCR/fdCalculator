@@ -119,7 +119,7 @@
 
                                             <div class="col-sm-6 col-lg-3 d-flex align-items-end">
                                                 <div class="form-group message-btn w-100">
-                                                    <a href="javascript:void(0);" class="theme-btn text-uppercase  w-100 calculate"><span class="calculate-btn-label">Calculate</span></a>
+                                                    <a href="javascript:void(0);" class="theme-btn text-uppercase w-100 calculate"><span class="calculate-btn-label">Calculate</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -167,6 +167,8 @@
 @section('script')
     <script>
 
+        var $isSending = false;
+
         var $clientId = "{{ !empty($client) ? $client->id : '' }}";
 
         function formatAmountInput() {
@@ -195,7 +197,7 @@
                 Swal.fire('Error!', 'Rate is required!', 'error');
             }*/
 
-            if($isInvalid === 0){
+            if($isInvalid === 0 && !$isSending){
 
                 setTimeout(function() {
                     $.ajax({
@@ -211,11 +213,15 @@
                         },
                         dataType: 'json',
                         beforeSend: function ($jqXHR, $obj) {
+                            $isSending = true;
+                            $('.calculate').css({'opacity': '0.5', 'cursor': 'not-allowed'});
                             $('.calculate-btn-label').html('Calculating....');
                             $('.label-rate').html('<i class="fa-solid fa-spinner fa-spin-pulse"></i>');
                             $('.label-maturity').html('<i class="fa-solid fa-spinner fa-spin-pulse"></i>');
                         },
                         success: function ($response, $textStatus, $jqXHR) {
+                            $isSending = false;
+                            $('.calculate').css({'opacity': '1', 'cursor': 'pointer'});
                             $('.calculate-btn-label').html('Calculate');
                             $('.label-rate').html($response.rate);
 
