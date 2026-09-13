@@ -18,8 +18,33 @@
                             <ul class="navigation clearfix">
                                 <li class="current"><a href="{{ url('/') }}">Get In Touch</a></li>
                             </ul>
+                            <div class="d-lg-none">
+                                @auth()
+                                    <ul class="navigation clearfix">
+                                        <li class="current"><a href="{{ url('admin') }}">Admin Dashboard</a></li>
+                                        <li class=""><a class="logout" href="javascript:void(0);">Logout</a></li>
+                                    </ul>
+                                @else
+                                    <ul class="navigation clearfix">
+                                        <li class="current"><a href="{{ url('login') }}">Log In</a></li>
+                                    </ul>
+                                @endauth
+                            </div>
                         </div>
                     </nav>
+                </div>
+                <div class="menu-right-content main-menu navbar-expand-md">
+                    @auth()
+                        <ul class="navigation clearfix">
+                            <li class="current"><a href="{{ url('admin') }}">Admin Dashboard</a></li>
+                            <li class=""><a class="logout" href="javascript:void(0);">Logout</a></li>
+                        </ul>
+                    @else
+                        <ul class="navigation clearfix">
+                            <li class="current"><a href="{{ url('login') }}">Log In</a></li>
+                        </ul>
+                    @endauth
+
                 </div>
             </div>
         </div>
